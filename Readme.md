@@ -1,7 +1,8 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Виталий Иванов](https://up.htmlacademy.ru/javascript-individual/2/user/2635363).
-* Наставник: `Неизвестно`.
+* Наставник: [Станислав Михайлов](https://htmlacademy.ru/profile/id139638).
+* Ссылка на GitHub pages: [Кекстаграм](https://vittivanov.github.io/2635363-kekstagram-2/)
 
 ---
 
