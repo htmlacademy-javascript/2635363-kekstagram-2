@@ -1,7 +1,7 @@
 function isStringValid(string, length) {
   return string.length <= length;
 }
-isStringValid('test', 4);
+isStringValid();
 
 function isPalindrome(string) {
   // приводит содержимое к строке и нижнему регистру
@@ -14,7 +14,7 @@ function isPalindrome(string) {
 
   return clean === clean.split('').reverse().join('');
 }
-isPalindrome('Лёша на полке клопа нашёл ');
+isPalindrome();
 
 function getNumbers(string) {
   // приводит содержимое к строке
@@ -25,4 +25,4 @@ function getNumbers(string) {
   }
   return +toNumber;
 }
-getNumbers('1321fds');
+getNumbers();
