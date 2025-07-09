@@ -21,7 +21,7 @@ function getNumbers(string) {
   const toNumber = string.toString().replace(/[^0-9]/g, '');
   // проверяет наличие цифр
   if (toNumber.length === 0) {
-    return 'В строке нет цифр';
+    return NaN;
   }
   return +toNumber;
 }
