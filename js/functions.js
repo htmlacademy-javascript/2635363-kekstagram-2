@@ -1,11 +1,15 @@
-function isStringValid(string, length) {
-  return string.length <= length;
-}
-isStringValid();
+const someText = 'Пример строки';
+const palindromeText = '123А роза упала на лапу Азора321';
 
-function isPalindrome(string) {
+function isStringValid(text, maxLength) {
+  return text.length <= maxLength;
+}
+
+isStringValid(someText, 20);
+
+function isPalindrome(rawText) {
   // приводит содержимое к строке и нижнему регистру
-  const normalized = string.toString().toLowerCase();
+  const normalized = rawText.toString().toLowerCase();
   // удаляет все ненужные символы
   const clean = normalized.replace(/[^a-z0-9а-яё]/g, '');
   if (clean.length === 0) {
@@ -14,15 +18,15 @@ function isPalindrome(string) {
 
   return clean === clean.split('').reverse().join('');
 }
-isPalindrome();
+isPalindrome(palindromeText);
 
-function getNumbers(string) {
-  // приводит содержимое к строке
-  const toNumber = string.toString().replace(/[^0-9]/g, '');
-  // проверяет наличие цифр
+function getNumbers(rawValue) {
+  const toNumber = rawValue.toString().replace(/[^0-9]/g, '');
   if (toNumber.length === 0) {
     return NaN;
   }
-  return +toNumber;
+  return Number(toNumber);
 }
-getNumbers();
+
+getNumbers(palindromeText);
+
