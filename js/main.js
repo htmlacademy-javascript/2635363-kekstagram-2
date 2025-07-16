@@ -104,7 +104,7 @@ function getRandomMessage() {
     } while (second === first);
     return `${first} ${second}`;
   }
-};
+}
 
 function getComment() {
   return {
