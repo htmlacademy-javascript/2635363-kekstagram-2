@@ -59,6 +59,15 @@ const PHOTO_DESCRIPTIONS = [
   'Тропинка в саду после дождя'
 ];
 
+const SETTINGS = {
+  photoCount: 25,
+  photoIdRange: [1, 25],
+  commentCountRange: [0, 30],
+  commentIdRange: [1, 750],
+  likesRange: [15, 200],
+  avatarCount: 6,
+};
+
 // вспомогательные функции
 
 function getRandomInt(min, max) {
@@ -76,7 +85,7 @@ const usedCommentIds = new Set();
 function getUniquePhotoId() {
   let id;
   do {
-    id = getRandomInt(1, 25);
+    id = getRandomInt(SETTINGS.photoIdRange[0], SETTINGS.photoIdRange[1]);
   } while (usedPhotoIds.has(id));
   usedPhotoIds.add(id);
   return id;
@@ -85,7 +94,7 @@ function getUniquePhotoId() {
 function getUniqueCommentId() {
   let id;
   do {
-    id = getRandomInt(1, 100);
+    id = getRandomInt(SETTINGS.commentIdRange[0], SETTINGS.commentIdRange[1]);
   } while (usedCommentIds.has(id));
   usedCommentIds.add(id);
   return id;
@@ -109,7 +118,7 @@ function getRandomMessage() {
 function getComment() {
   return {
     id: getUniqueCommentId(),
-    avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
+    avatar: `img/avatar-${getRandomInt(1, SETTINGS.avatarCount)}.svg`,
     message: getRandomMessage(),
     name: getRandomElement(USER_NAMES),
   };
@@ -118,21 +127,21 @@ function getComment() {
 // фотографии
 function getPhoto() {
   const id = getUniquePhotoId();
-  const commentsCount = getRandomInt(0, 30);
+  const commentsCount = getRandomInt(SETTINGS.commentCountRange[0], SETTINGS.commentCountRange[1]);
   const comments = Array.from({ length: commentsCount }, getComment);
 
   return {
     id,
     url: `photos/${id}.jpg`,
     description: getRandomElement(PHOTO_DESCRIPTIONS),
-    likes: getRandomInt(15, 200),
+    likes: getRandomInt(SETTINGS.likesRange[0], SETTINGS.likesRange[1]),
     comments
   };
 }
 
 function getPhotos() {
   const photos = [];
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < SETTINGS.photoCount; i++) {
     photos.push(getPhoto());
   }
   return photos;
