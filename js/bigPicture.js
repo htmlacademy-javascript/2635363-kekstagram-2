@@ -40,7 +40,6 @@ function closeBigPicture() {
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyDown);
   bigPictureCancel.removeEventListener('click', closeBigPicture);
-  loadMoreButton.removeEventListener('click', onLoadMoreClick);
 }
 
 function onEscKeyDown(evt) {
