@@ -1,4 +1,4 @@
-import { MAX_HASHTAGS, HASHTAG_REGEX, MAX_COMMENT_LENGTH } from './data/const.js';
+import { MAX_HASHTAGS, HASHTAG_REGEX, MAX_COMMENT_LENGTH } from '../data/const.js';
 
 const form = document.querySelector('.img-upload__form');
 const uploadInput = form.querySelector('.img-upload__input');
