@@ -35,3 +35,11 @@ effectsList.addEventListener('change', (evt) => {
   slider.noUiSlider.updateOptions(currentEffect.options);
   updateEffect(currentEffect.options.start);
 });
+
+// сброс эффектов и размеров
+export function resetEffects() {
+  currentEffect = EFFECTS.none;
+  slider.noUiSlider.updateOptions(currentEffect.options);
+  updateEffect(currentEffect.options.start);
+  imgPreview.style.filter = '';
+}
