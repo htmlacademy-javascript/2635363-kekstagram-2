@@ -1,4 +1,6 @@
-import { MAX_HASHTAGS, HASHTAG_REGEX, MAX_COMMENT_LENGTH } from './data/const.js';
+import { MAX_HASHTAGS, HASHTAG_REGEX, MAX_COMMENT_LENGTH } from '../data/const.js';
+import { resetEffects } from './effects.js';
+import { resetScale } from './scale.js';
 
 const form = document.querySelector('.img-upload__form');
 const uploadInput = form.querySelector('.img-upload__input');
@@ -41,6 +43,8 @@ function closeForm() {
   document.body.classList.remove('modal-open');
   form.reset();
   pristine.reset();
+  resetEffects();
+  resetScale();
 }
 
 cancelButton.addEventListener('click', closeForm);
