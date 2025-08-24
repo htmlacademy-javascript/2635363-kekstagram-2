@@ -1,4 +1,4 @@
-import { MESSAGES, USER_NAMES, SETTINGS, PHOTO_DESCRIPTIONS } from '../data/const.js';
+import { SETTINGS } from '../data/const.js';
 
 // вспомогательные функции
 

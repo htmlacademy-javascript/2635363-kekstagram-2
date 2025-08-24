@@ -1,12 +1,14 @@
 import { MAX_HASHTAGS, HASHTAG_REGEX, MAX_COMMENT_LENGTH } from '../data/const.js';
 import { resetEffects } from './effects.js';
 import { resetScale } from './scale.js';
+import { sendData } from '../api.js';
+import { showMessage } from '../utils/messages.js';
+
 
 const form = document.querySelector('.img-upload__form');
 const uploadInput = form.querySelector('.img-upload__input');
 const overlay = form.querySelector('.img-upload__overlay');
 const cancelButton = form.querySelector('.img-upload__cancel');
-
 const hashTagsInput = form.querySelector('.text__hashtags');
 const descriptionInput = form.querySelector('.text__description');
 
@@ -24,7 +26,6 @@ function validateHashtags(value) {
   if (uniqueTags.size !== tags.length) return false;
   return tags.every((tag) => HASHTAG_REGEX.test(tag));
 }
-
 pristine.addValidator(hashTagsInput, validateHashtags, 'Неправильные хэштеги');
 
 function validateComment(value) {
@@ -48,7 +49,6 @@ function closeForm() {
 }
 
 cancelButton.addEventListener('click', closeForm);
-
 document.addEventListener('keydown', (evt) => {
   if (evt.key === 'Escape' && document.activeElement !== hashTagsInput && document.activeElement !== descriptionInput
   ) {
@@ -56,24 +56,18 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
-form.addEventListener('submit', (evt) => {
+form.addEventListener('submit', async (evt) => {
   evt.preventDefault();
   const valid = pristine.validate();
   if (!valid) return;
 
   const formData = new FormData(form);
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-    method: 'POST',
-    body: formData,
-  })
-    .then((response) => {
-      if (response.ok) {
-        closeForm();
-      } else {
-        console.error('Ошибка при отправке формы');
-      }
-    })
-    .catch((error) => {
-      console.error('Ошибка сети при отправке формы', error);
-    });
+
+  try {
+    await sendData(formData);
+    closeForm();
+    showMessage('success');
+  } catch (err) {
+    showMessage('error');
+  }
 })
