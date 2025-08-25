@@ -50,7 +50,7 @@ function closeForm() {
 
 cancelButton.addEventListener('click', closeForm);
 document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape' && document.activeElement !== hashTagsInput && document.activeElement !== descriptionInput
+  if (evt.key === 'Escape' && document.activeElement !== hashTagsInput && document.activeElement !== descriptionInput && !document.querySelector('.error__inner')
   ) {
     closeForm();
   }
