@@ -28,6 +28,10 @@ export function showMessage(type) {
   closeButton.addEventListener('click', removeMessage);
   document.addEventListener('keydown', onEsc);
   message.addEventListener('click', onClickOutside);
+}
 
+export function showDataError() {
+  const template = document.querySelector(`#data-error`).content.cloneNode(true);
+  document.body.append(template);
 }
 
