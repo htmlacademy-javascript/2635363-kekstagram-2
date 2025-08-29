@@ -1,44 +1,33 @@
 import { renderThumbnails, clearThumbnails } from "../render-thumbnails.js";
 import { debounce } from "./debounce.js";
 import { RANDOM_PHOTOS_COUNT } from "../data/const.js";
+import { photos } from "../data/data.js";
 
-let photos = [];
-
-function setPhotos(data) {
-  photos = data || [];
-}
 
 function getRandomPhotos() {
-  if (!photos.length) return [];
   return [...photos]
     .sort(() => Math.random() - 0.5)
     .slice(0, RANDOM_PHOTOS_COUNT);
 }
 
 function getDiscussedPhotos() {
-  if (!photos.length) return [];
   return [...photos].sort((a, b) => b.comments.length - a.comments.length);
 }
 
 function applyFilter(filterId) {
-  console.log("Фильтр выбран:", filterId);       // какой фильтр нажали
-  console.log("Сколько фото всего:", photos.length);
   clearThumbnails();
 
   let filteredPhotos = [];
 
   switch (filterId) {
     case 'filter-default':
-      console.log("Рисуем дефолт", photos.length);
-      filteredPhotos(photos);
+      filteredPhotos = photos;
       break;
     case 'filter-random':
-      console.log("Рисуем рандом", photos.length);
-      filteredPhotos = getRandomPhotos(photos);
+      filteredPhotos = getRandomPhotos();
       break;
     case 'filter-discussed':
-      console.log("Рисуем обсуждаемые", photos.length);
-      filteredPhotos = getDiscussedPhotos(photos);
+      filteredPhotos = getDiscussedPhotos();
       break;
     default:
       filteredPhotos = photos;
@@ -47,8 +36,7 @@ function applyFilter(filterId) {
   renderThumbnails(filteredPhotos);
 }
 
-export function initFilters(data) {
-  setPhotos(data);
+export function initFilters() {
 
   const filters = document.querySelector('.img-filters');
   filters.classList.remove('img-filters--inactive');
