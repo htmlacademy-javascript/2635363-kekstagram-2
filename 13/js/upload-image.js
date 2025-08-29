@@ -8,6 +8,7 @@ const overlay = document.querySelector('.img-upload__overlay');
 const previewImg = document.querySelector('.img-upload__preview img');
 const cancelButton = document.querySelector('#upload-cancel');
 const submitButton = document.querySelector('.img-upload__submit');
+const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
 
 let currentEffect = 'none';
