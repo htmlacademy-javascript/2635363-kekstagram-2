@@ -1,0 +1,3 @@
+const photos = [];
+
+export { photos };
