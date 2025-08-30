@@ -18,17 +18,17 @@ applyEffect();
 
 function applyEffect() {
   const effectData = EFFECTS[currentEffect];
-  const slider = document.querySelector('.effect-level__slider');
+  const sliderFieldset = document.querySelector('.img-upload__effect-level');
   const effectLevelInput = document.querySelector('.effect-level__value');
 
   if (!effectData || currentEffect === 'none') {
+    sliderFieldset.classList.add('hidden');
     previewImg.style.filter = '';
-    slider.classList.add('hidden');
     effectLevelInput.value = '0';
     return;
   }
 
-  slider.classList.remove('hidden');
+  sliderFieldset.classList.remove('hidden');
   const value = effectData.options.start;
   const unit = effectData.unit || '';
   previewImg.style.filter = `${effectData.filter}(${value}${unit || ''})`;
@@ -82,7 +82,7 @@ fileInput.addEventListener('change', () => {
 cancelButton.addEventListener('click', resetForm);
 
 document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape' && overlay.classList.contains('hidden')) {
+  if (evt.key === 'Escape' && !overlay.classList.contains('hidden')) {
     resetForm();
   }
 });
