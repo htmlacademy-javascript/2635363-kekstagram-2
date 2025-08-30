@@ -25,7 +25,7 @@ function updateEffect(value) {
 }
 
 slider.noUiSlider.on('update', (values) => {
-  updateEffect(values[0])
+  updateEffect(values[0]);
 });
 
 effectsList.addEventListener('change', (evt) => {

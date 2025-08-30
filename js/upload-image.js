@@ -14,14 +14,24 @@ const descriptionInput = document.querySelector('.text__description');
 let currentEffect = 'none';
 let currentScale = 100;
 
+applyEffect();
+
 function applyEffect() {
   const effectData = EFFECTS[currentEffect];
-  if (!effectData) return;
+  const slider = document.querySelector('.effect-level__slider');
 
+  if (!effectData || currentEffect === 'none') {
+    previewImg.style.filter = '';
+    slider.classList.add('hidden');
+    return;
+  }
+
+  slider.classList.remove('hidden');
   const value = effectData.options.start;
   const unit = effectData.unit;
   previewImg.style.filter = effectData.filter ? `${effectData.filter}(${value}${unit || ''})` : '';
-};
+
+}
 
 document.querySelectorAll('.effects__radio').forEach((radio) => {
   radio.addEventListener('change', () => {
@@ -41,11 +51,13 @@ function resetForm() {
   document.body.classList.remove('modal-open');
   document.querySelector('.text__hashtags').value = '';
   applyEffect();
-};
+}
 
 fileInput.addEventListener('change', () => {
   const file = fileInput.files[0];
-  if (!file) return;
+  if (!file) {
+    return;
+  }
 
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((ext) => fileName.endsWith(ext));
@@ -61,7 +73,7 @@ fileInput.addEventListener('change', () => {
 
     reader.readAsDataURL(file);
   } else {
-    const errorTemplate = document.querySelector(`#error`).content.cloneNode(true);
+    const errorTemplate = document.querySelector('error').content.cloneNode(true);
     document.body.append(errorTemplate);
   }
 });

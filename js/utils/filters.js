@@ -1,8 +1,7 @@
-import { renderThumbnails, clearThumbnails } from "../render-thumbnails.js";
-import { debounce } from "./debounce.js";
-import { RANDOM_PHOTOS_COUNT } from "../data/const.js";
-import { photos } from "../data/data.js";
-
+import { renderThumbnails, clearThumbnails } from '../render-thumbnails.js';
+import { debounce } from './debounce.js';
+import { RANDOM_PHOTOS_COUNT } from '../data/const.js';
+import { photos } from '../data/data.js';
 
 function getRandomPhotos() {
   return [...photos]
@@ -45,11 +44,11 @@ export function initFilters() {
   const debouncedApplyFilter = debounce(applyFilter, 500);
 
   buttons.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener('click', () => {
       buttons.forEach((btn) =>
-        btn.classList.remove("img-filters__button--active")
+        btn.classList.remove('img-filters__button--active')
       );
-      button.classList.add("img-filters__button--active");
+      button.classList.add('img-filters__button--active');
 
       debouncedApplyFilter(button.id);
     });

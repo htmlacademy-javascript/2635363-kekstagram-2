@@ -1,4 +1,3 @@
-
 function createComment({ avatar, name, message }) {
   const li = document.createElement('li');
   li.classList.add('social__comment');
@@ -17,6 +16,6 @@ function createComment({ avatar, name, message }) {
   li.appendChild(img);
   li.appendChild(p);
   return li;
-};
+}
 
 export { createComment };

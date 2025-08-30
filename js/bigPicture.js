@@ -1,4 +1,4 @@
-import { createComment } from "./createComment.js";
+import { createComment } from './createComment.js';
 import { COMMENTS_PER_PAGE } from './data/const.js';
 
 const bigPicture = document.querySelector('.big-picture');

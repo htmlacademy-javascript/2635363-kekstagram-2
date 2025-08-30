@@ -1,4 +1,4 @@
-import { SCALE_MIN, SCALE_MAX, SCALE_STEP, SCALE_DEFAULT } from "../data/const.js";
+import { SCALE_MIN, SCALE_MAX, SCALE_STEP, SCALE_DEFAULT } from '../data/const.js';
 
 let currentScale = 100;
 
