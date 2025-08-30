@@ -19,18 +19,20 @@ applyEffect();
 function applyEffect() {
   const effectData = EFFECTS[currentEffect];
   const slider = document.querySelector('.effect-level__slider');
+  const effectLevelInput = document.querySelector('.effect-level__value');
 
   if (!effectData || currentEffect === 'none') {
     previewImg.style.filter = '';
     slider.classList.add('hidden');
+    effectLevelInput.value = '0';
     return;
   }
 
   slider.classList.remove('hidden');
   const value = effectData.options.start;
-  const unit = effectData.unit;
-  previewImg.style.filter = effectData.filter ? `${effectData.filter}(${value}${unit || ''})` : '';
-
+  const unit = effectData.unit || '';
+  previewImg.style.filter = `${effectData.filter}(${value}${unit || ''})`;
+  effectLevelInput.value = value.toFixed(1);
 }
 
 document.querySelectorAll('.effects__radio').forEach((radio) => {
@@ -49,7 +51,6 @@ function resetForm() {
   currentScale = 100;
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.querySelector('.text__hashtags').value = '';
   applyEffect();
 }
 
@@ -73,12 +74,18 @@ fileInput.addEventListener('change', () => {
 
     reader.readAsDataURL(file);
   } else {
-    const errorTemplate = document.querySelector('error').content.cloneNode(true);
+    const errorTemplate = document.querySelector('#error').content.cloneNode(true);
     document.body.append(errorTemplate);
   }
 });
 
 cancelButton.addEventListener('click', resetForm);
+
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape' && overlay.classList.contains('hidden')) {
+    resetForm();
+  }
+});
 
 submitButton.addEventListener('click', (evt) => {
   evt.preventDefault();

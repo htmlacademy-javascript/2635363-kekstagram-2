@@ -37,17 +37,17 @@ const EFFECTS = {
   },
   marvin: {
     filter: 'invert',
-    options: { range: { min: 0, max: 100 }, start: 100, step: 1 },
+    options: { range: { min: 0, max: 100 }, start: 100, step: 10 },
     unit: '%'
   },
   phobos: {
     filter: 'blur',
-    options: { range: { min: 0, max: 3 }, start: 3, step: 0.1 },
+    options: { range: { min: 0, max: 3 }, start: 3, step: 0.3 },
     unit: 'px'
   },
   heat: {
     filter: 'brightness',
-    options: { range: { min: 1, max: 3 }, start: 3, step: 0.1 }
+    options: { range: { min: 1, max: 3 }, start: 3, step: 0.3 }
   }
 };
 
