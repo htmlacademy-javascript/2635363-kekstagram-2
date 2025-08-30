@@ -14,14 +14,26 @@ const descriptionInput = document.querySelector('.text__description');
 let currentEffect = 'none';
 let currentScale = 100;
 
+applyEffect();
+
 function applyEffect() {
   const effectData = EFFECTS[currentEffect];
-  if (!effectData) return;
+  const sliderFieldset = document.querySelector('.img-upload__effect-level');
+  const effectLevelInput = document.querySelector('.effect-level__value');
 
+  if (!effectData || currentEffect === 'none') {
+    sliderFieldset.classList.add('hidden');
+    previewImg.style.filter = '';
+    effectLevelInput.value = '0';
+    return;
+  }
+
+  sliderFieldset.classList.remove('hidden');
   const value = effectData.options.start;
-  const unit = effectData.unit;
-  previewImg.style.filter = effectData.filter ? `${effectData.filter}(${value}${unit || ''})` : '';
-};
+  const unit = effectData.unit || '';
+  previewImg.style.filter = `${effectData.filter}(${value}${unit || ''})`;
+  effectLevelInput.value = value.toFixed(1);
+}
 
 document.querySelectorAll('.effects__radio').forEach((radio) => {
   radio.addEventListener('change', () => {
@@ -39,13 +51,14 @@ function resetForm() {
   currentScale = 100;
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.querySelector('.text__hashtags').value = '';
   applyEffect();
-};
+}
 
 fileInput.addEventListener('change', () => {
   const file = fileInput.files[0];
-  if (!file) return;
+  if (!file) {
+    return;
+  }
 
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((ext) => fileName.endsWith(ext));
@@ -61,12 +74,18 @@ fileInput.addEventListener('change', () => {
 
     reader.readAsDataURL(file);
   } else {
-    const errorTemplate = document.querySelector(`#error`).content.cloneNode(true);
+    const errorTemplate = document.querySelector('#error').content.cloneNode(true);
     document.body.append(errorTemplate);
   }
 });
 
 cancelButton.addEventListener('click', resetForm);
+
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape' && !overlay.classList.contains('hidden')) {
+    resetForm();
+  }
+});
 
 submitButton.addEventListener('click', (evt) => {
   evt.preventDefault();

@@ -1,6 +1,6 @@
-import { getUniquePhotoId } from "../utils/helpers.js";
+import { getUniquePhotoId } from '../utils/helpers.js';
 
-export function createPhoto({ url, description, hashtags, comments, effect, scale }) {
+export function createPhoto({ url, description, hashtags, effect, scale }) {
   return {
     id: getUniquePhotoId(),
     url,
@@ -11,4 +11,4 @@ export function createPhoto({ url, description, hashtags, comments, effect, scal
     effect: effect || 'none',
     scale: scale || 100
   };
-};
+}

@@ -15,8 +15,9 @@ export function showMessage(type) {
   }
 
   function onEsc(evt) {
-    if (evt.key === 'Escape')
+    if (evt.key === 'Escape') {
       removeMessage();
+    }
   }
 
   function onClickOutside(evt) {
@@ -31,7 +32,7 @@ export function showMessage(type) {
 }
 
 export function showDataError() {
-  const template = document.querySelector(`#data-error`).content.cloneNode(true);
+  const template = document.querySelector('#data-error').content.cloneNode(true);
   document.body.append(template);
 }
 

@@ -19,11 +19,17 @@ const pristine = new Pristine(form, {
 });
 
 function validateHashtags(value) {
-  if (!value) return true;
+  if (!value) {
+    return true;
+  }
   const tags = value.toLowerCase().trim().split(/\s+/);
-  if (tags.length > MAX_HASHTAGS) return false;
+  if (tags.length > MAX_HASHTAGS) {
+    return false;
+  }
   const uniqueTags = new Set(tags);
-  if (uniqueTags.size !== tags.length) return false;
+  if (uniqueTags.size !== tags.length) {
+    return false;
+  }
   return tags.every((tag) => HASHTAG_REGEX.test(tag));
 }
 pristine.addValidator(hashTagsInput, validateHashtags, 'Неправильные хэштеги');
@@ -59,7 +65,9 @@ document.addEventListener('keydown', (evt) => {
 form.addEventListener('submit', async (evt) => {
   evt.preventDefault();
   const valid = pristine.validate();
-  if (!valid) return;
+  if (!valid) {
+    return;
+  }
 
   const formData = new FormData(form);
 
@@ -70,4 +78,5 @@ form.addEventListener('submit', async (evt) => {
   } catch (err) {
     showMessage('error');
   }
-})
+});
+
