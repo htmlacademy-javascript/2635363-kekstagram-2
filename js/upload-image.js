@@ -1,18 +1,14 @@
-import { renderThumbnails } from './render-thumbnails.js';
-import { photos } from './data/data.js';
 import { EFFECTS, FILE_TYPES } from './data/const.js';
-import { createPhoto } from './data/photo-template.js';
 
 const fileInput = document.querySelector('#upload-file');
 const overlay = document.querySelector('.img-upload__overlay');
 const previewImg = document.querySelector('.img-upload__preview img');
 const cancelButton = document.querySelector('#upload-cancel');
-const submitButton = document.querySelector('.img-upload__submit');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
+const effectPreview = document.querySelectorAll('.effects__preview');
 
 let currentEffect = 'none';
-let currentScale = 100;
 
 applyEffect();
 
@@ -48,7 +44,6 @@ function resetForm() {
   descriptionInput.value = '';
   hashtagsInput.value = '';
   currentEffect = 'none';
-  currentScale = 100;
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   applyEffect();
@@ -70,6 +65,9 @@ fileInput.addEventListener('change', () => {
       previewImg.src = reader.result;
       overlay.classList.remove('hidden');
       document.body.classList.add('modal-open');
+      for (let i = 0; i < effectPreview.length; i++) {
+        effectPreview[i].style.backgroundImage = `url(${reader.result})`;
+      }
     });
 
     reader.readAsDataURL(file);
@@ -82,26 +80,7 @@ fileInput.addEventListener('change', () => {
 cancelButton.addEventListener('click', resetForm);
 
 document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape' && !overlay.classList.contains('hidden')) {
+  if (evt.key === 'Escape' && !overlay.classList.contains('hidden') && !document.querySelector('.error__inner')) {
     resetForm();
   }
-});
-
-submitButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-
-  const newPhoto = createPhoto({
-    url: previewImg.src,
-    description: descriptionInput.value,
-    hashtags: document.querySelector('.text__hashtags').value,
-    likes: 0,
-    comments: [],
-    effect: currentEffect,
-    scale: currentScale
-  });
-
-  photos.push(newPhoto);
-  renderThumbnails([newPhoto]);
-
-  resetForm();
 });

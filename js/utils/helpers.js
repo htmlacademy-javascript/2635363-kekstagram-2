@@ -1,7 +1,6 @@
 import { SETTINGS } from '../data/const.js';
 
 // вспомогательные функции
-
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -11,25 +10,20 @@ function getRandomElement(arr) {
 }
 
 // уникальные id
+
+function getUniqueId(range, usedIds) {
+  let id;
+  do {
+    id = getRandomInt(range[0], range[1]);
+  } while (usedIds.has(id));
+  usedIds.add(id);
+  return id;
+}
+
 const usedPhotoIds = new Set();
-const usedCommentIds = new Set();
 
-function getUniquePhotoId() {
-  let id;
-  do {
-    id = getRandomInt(SETTINGS.photoIdRange[0], SETTINGS.photoIdRange[1]);
-  } while (usedPhotoIds.has(id));
-  usedPhotoIds.add(id);
-  return id;
+function getUniqueIdPhotoId() {
+  return getUniqueId(SETTINGS.photoIdRange, usedPhotoIds);
 }
 
-function getUniqueCommentId() {
-  let id;
-  do {
-    id = getRandomInt(SETTINGS.commentIdRange[0], SETTINGS.commentIdRange[1]);
-  } while (usedCommentIds.has(id));
-  usedCommentIds.add(id);
-  return id;
-}
-
-export { getUniquePhotoId, getUniqueCommentId, getRandomInt, getRandomElement };
+export { getUniqueIdPhotoId, getRandomInt, getRandomElement };

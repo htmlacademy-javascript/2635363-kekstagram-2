@@ -1,3 +1,0 @@
-const photos = [];
-
-export { photos };
