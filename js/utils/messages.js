@@ -3,10 +3,9 @@ const body = document.querySelector('body');
 export function showMessage(type) {
   const template = document.querySelector(`#${type}`).content.cloneNode(true);
   const message = template.querySelector(type === 'success' ? '.success' : '.error');
+  const closeButton = message.querySelector(type === 'success' ? '.success__button' : '.error__button');
 
   body.appendChild(message);
-
-  const closeButton = message.querySelector(type === 'success' ? '.success__button' : '.error__button');
 
   function removeMessage() {
     message.remove();
