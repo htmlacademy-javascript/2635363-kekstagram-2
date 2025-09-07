@@ -14,21 +14,32 @@ function setScale(value) {
   imgPreview.style.transform = `scale(${value / 100})`;
 }
 
-smallerButton.addEventListener('click', () => {
+function decreaseScale() {
   if (currentScale > SCALE_MIN) {
     setScale(currentScale - SCALE_STEP);
   }
-});
+}
 
-biggerButton.addEventListener('click', () => {
+function onSmallerButtonClick() {
+  decreaseScale();
+}
+
+smallerButton.addEventListener('click', onSmallerButtonClick);
+
+function increaseScale() {
   if (currentScale < SCALE_MAX) {
     setScale(currentScale + SCALE_STEP);
   }
-});
+}
+
+function onBiggerButtonClick() {
+  increaseScale();
+}
+
+biggerButton.addEventListener('click', onBiggerButtonClick);
 
 setScale(SCALE_DEFAULT);
 
-// сброс размера изображения
 export function resetScale() {
   setScale(SCALE_DEFAULT);
 }

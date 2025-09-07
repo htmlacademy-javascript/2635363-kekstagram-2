@@ -3,13 +3,19 @@ import { debounce } from './debounce.js';
 import { RANDOM_PHOTOS_COUNT } from '../data/const.js';
 
 function getRandomPhotos(pictures) {
+  function getRandomSort() {
+    return Math.random() - 0.5;
+  }
   return [...pictures]
-    .sort(() => Math.random() - 0.5)
+    .sort(getRandomSort)
     .slice(0, RANDOM_PHOTOS_COUNT);
 }
 
 function getDiscussedPhotos(pictures) {
-  return [...pictures].sort((a, b) => b.comments.length - a.comments.length);
+  function compareComments(a, b) {
+    return b.comments.length - a.comments.length;
+  }
+  return [...pictures].sort(compareComments);
 }
 
 function applyFilter(filterId, pictures) {
@@ -39,19 +45,34 @@ export function initFilters(pictures) {
   filters.classList.remove('img-filters--inactive');
 
   const buttons = filters.querySelectorAll('.img-filters__button');
+
+  function handleFilterChange(filterId) {
+    applyFilter(filterId, pictures);
+  }
+
   const debouncedApplyFilter = debounce(
-    (filterId) => applyFilter(filterId, pictures),
-    500
+    handleFilterChange, 500
   );
 
-  buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-      buttons.forEach((btn) =>
-        btn.classList.remove('img-filters__button--active')
-      );
-      button.classList.add('img-filters__button--active');
+  buttons.forEach(addButtonClickHandler);
 
-      debouncedApplyFilter(button.id);
-    });
-  });
+  function addButtonClickHandler(button) {
+    button.addEventListener('click', onFilterButtonClick.bind(null, button));
+  }
+
+  function onFilterButtonClick(button) {
+    removeActiveClasses();
+
+    button.classList.add('img-filters__button--active');
+
+    debouncedApplyFilter(button.id);
+  }
+
+  function removeActiveClasses() {
+    buttons.forEach(removeActiveClass);
+  }
+
+  function removeActiveClass(button) {
+    button.classList.remove('img-filters__button--active');
+  }
 }
