@@ -18,6 +18,10 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper--error'
 });
 
+function validateHashtag(tag) {
+  return HASHTAG_REGEX.test(tag);
+}
+
 function validateHashtags(value) {
   if (!value) {
     return true;
@@ -30,7 +34,7 @@ function validateHashtags(value) {
   if (uniqueTags.size !== tags.length) {
     return false;
   }
-  return tags.every((tag) => HASHTAG_REGEX.test(tag));
+  return tags.every(validateHashtag);
 }
 pristine.addValidator(hashTagsInput, validateHashtags, 'Неправильные хэштеги');
 
@@ -40,10 +44,23 @@ function validateComment(value) {
 
 pristine.addValidator(descriptionInput, validateComment, 'Комментарий не должен превышать 140 символов');
 
-uploadInput.addEventListener('change', () => {
+function onEscKeyDown(evt) {
+  if (evt.key === 'Escape' &&
+    document.activeElement !== hashTagsInput &&
+    document.activeElement !== descriptionInput &&
+    !document.querySelector('.error__inner')
+  ) {
+    closeForm();
+  }
+}
+
+function onUploadInputChange() {
   overlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-});
+  document.addEventListener('keydown', onEscKeyDown);
+}
+
+uploadInput.addEventListener('change', onUploadInputChange);
 
 function closeForm() {
   overlay.classList.add('hidden');
@@ -52,17 +69,17 @@ function closeForm() {
   pristine.reset();
   resetEffects();
   resetScale();
+
+  document.removeEventListener('keydown', onEscKeyDown);
 }
 
-cancelButton.addEventListener('click', closeForm);
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape' && document.activeElement !== hashTagsInput && document.activeElement !== descriptionInput && !document.querySelector('.error__inner')
-  ) {
-    closeForm();
-  }
-});
+function onCancelButtonClick() {
+  closeForm();
+}
 
-form.addEventListener('submit', async (evt) => {
+cancelButton.addEventListener('click', onCancelButtonClick);
+
+async function onFormSubmit(evt) {
   evt.preventDefault();
   const valid = pristine.validate();
   if (!valid) {
@@ -78,5 +95,6 @@ form.addEventListener('submit', async (evt) => {
   } catch (err) {
     showMessage('error');
   }
-});
+}
 
+form.addEventListener('submit', onFormSubmit);

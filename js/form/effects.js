@@ -5,6 +5,7 @@ const imgPreview = form.querySelector('.img-upload__preview img');
 const effectLevel = form.querySelector('.effect-level__value');
 const slider = form.querySelector('.effect-level__slider');
 const effectsList = form.querySelector('.effects');
+const sliderFieldset = document.querySelector('.img-upload__effect-level');
 
 noUiSlider.create(slider, {
   range: { min: 0, max: 100 },
@@ -24,17 +25,21 @@ function updateEffect(value) {
   }
 }
 
-slider.noUiSlider.on('update', (values) => {
+function onSliderUpdate(values) {
   updateEffect(values[0]);
-});
+}
 
-effectsList.addEventListener('change', (evt) => {
+function onEffectsChange(evt) {
   const effectName = evt.target.value;
   currentEffect = EFFECTS[effectName];
 
   slider.noUiSlider.updateOptions(currentEffect.options);
   updateEffect(currentEffect.options.start);
-});
+}
+
+// Навешиваем именованные обработчики
+slider.noUiSlider.on('update', onSliderUpdate);
+effectsList.addEventListener('change', onEffectsChange);
 
 // сброс эффектов и размеров
 export function resetEffects() {
@@ -42,4 +47,5 @@ export function resetEffects() {
   slider.noUiSlider.updateOptions(currentEffect.options);
   updateEffect(currentEffect.options.start);
   imgPreview.style.filter = '';
+  sliderFieldset.classList.add('hidden');
 }

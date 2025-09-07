@@ -1,4 +1,5 @@
 import { EFFECTS, FILE_TYPES } from './data/const.js';
+import { resetEffects } from './form/effects.js';
 
 const fileInput = document.querySelector('#upload-file');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -12,75 +13,107 @@ let currentEffect = 'none';
 
 applyEffect();
 
+function toggleSlider(show) {
+  const sliderFieldset = document.querySelector('.img-upload__effect-level');
+  if (show) {
+    sliderFieldset.classList.remove('hidden');
+  } else {
+    sliderFieldset.classList.add('hidden');
+  }
+}
+
 function applyEffect() {
   const effectData = EFFECTS[currentEffect];
-  const sliderFieldset = document.querySelector('.img-upload__effect-level');
   const effectLevelInput = document.querySelector('.effect-level__value');
 
   if (!effectData || currentEffect === 'none') {
-    sliderFieldset.classList.add('hidden');
+    toggleSlider(false);
     previewImg.style.filter = '';
     effectLevelInput.value = '0';
     return;
   }
 
-  sliderFieldset.classList.remove('hidden');
+  toggleSlider(true);
   const value = effectData.options.start;
   const unit = effectData.unit || '';
   previewImg.style.filter = `${effectData.filter}(${value}${unit || ''})`;
   effectLevelInput.value = value.toFixed(1);
 }
 
-document.querySelectorAll('.effects__radio').forEach((radio) => {
-  radio.addEventListener('change', () => {
-    currentEffect = radio.value;
-    applyEffect();
-  });
-});
+function initEffectChangeListeners() {
+  const radios = document.querySelectorAll('.effects__radio');
+  radios.forEach(addEffectChangeListener);
+}
+
+function addEffectChangeListener(radio) {
+  radio.addEventListener('change', onEffectChange);
+}
+
+function onEffectChange(evt) {
+  currentEffect = evt.target.value;
+  applyEffect();
+}
+
+initEffectChangeListeners();
 
 function resetForm() {
   fileInput.value = '';
   previewImg.src = 'img/upload-default-image.jpg';
   descriptionInput.value = '';
   hashtagsInput.value = '';
-  currentEffect = 'none';
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  applyEffect();
+  resetEffects();
+
+  document.removeEventListener('keydown', onEscKeyDown);
 }
 
-fileInput.addEventListener('change', () => {
-  const file = fileInput.files[0];
+function onCancelButtonClick() {
+  resetForm();
+}
+
+function onEscKeyDown(evt) {
+  if (evt.key === 'Escape' && !document.querySelector('.error__inner')) {
+    resetForm();
+  }
+}
+
+cancelButton.addEventListener('click', onCancelButtonClick);
+
+fileInput.addEventListener('change', onFileInputChange);
+
+function onFileInputChange(evt) {
+  const file = evt.target.files[0];
   if (!file) {
     return;
   }
 
   const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((ext) => fileName.endsWith(ext));
+
+  function getExtensionMatch(ext) {
+    return fileName.endsWith(ext);
+  }
+
+  const matches = FILE_TYPES.some(getExtensionMatch);
 
   if (matches) {
     const reader = new FileReader();
-
-    reader.addEventListener('load', () => {
-      previewImg.src = reader.result;
-      overlay.classList.remove('hidden');
-      document.body.classList.add('modal-open');
-      for (let i = 0; i < effectPreview.length; i++) {
-        effectPreview[i].style.backgroundImage = `url(${reader.result})`;
-      }
-    });
-
+    reader.addEventListener('load', onFileReaderLoad);
     reader.readAsDataURL(file);
   } else {
     const errorTemplate = document.querySelector('#error').content.cloneNode(true);
     document.body.append(errorTemplate);
   }
-});
+}
 
-cancelButton.addEventListener('click', resetForm);
+function onFileReaderLoad(evt) {
+  previewImg.src = evt.target.result;
+  overlay.classList.remove('hidden');
+  document.body.classList.add('modal-open');
 
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape' && !overlay.classList.contains('hidden') && !document.querySelector('.error__inner')) {
-    resetForm();
+  for (let i = 0; i < effectPreview.length; i++) {
+    effectPreview[i].style.backgroundImage = `url(${evt.target.result})`;
   }
-});
+
+  document.addEventListener('keydown', onEscKeyDown);
+}
